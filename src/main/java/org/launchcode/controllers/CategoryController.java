@@ -1,6 +1,5 @@
 package org.launchcode.controllers;
 
-
 import org.launchcode.models.Category;
 import org.launchcode.models.data.CategoryDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,31 +15,25 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("category")
 public class CategoryController {
-
     @Autowired
     private CategoryDao categoryDao;
 
-    //index handler
-    //request path: /cheese
-    @RequestMapping(value ="")
-    public String index (Model model){
-        model.addAttribute("title","My Categories");
+    @RequestMapping(value="")
+    public String index(Model model) {
+        model.addAttribute("title", "My Categories");
         model.addAttribute("categories", categoryDao.findAll());
         return "category/index";
     }
 
-    //add handler accepting GET Request
     @RequestMapping(value="add", method = RequestMethod.GET)
-    public String  add(Model model){
+    public String add(Model model) {
         model.addAttribute(new Category());
         model.addAttribute("title", "Add Category");
         return "category/add";
-
     }
 
-    //add Handler accepting POST Request
     @RequestMapping(value="add", method = RequestMethod.POST)
-    public String add(Model model, @ModelAttribute @Valid Category category, Errors errors){
+    public String add(Model model, @ModelAttribute @Valid Category category, Errors errors) {
         if (errors.hasErrors()) {
             return "category/add";
         }

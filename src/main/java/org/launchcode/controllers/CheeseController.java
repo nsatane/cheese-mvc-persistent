@@ -1,7 +1,7 @@
 package org.launchcode.controllers;
 
-import org.launchcode.models.Category;
 import org.launchcode.models.Cheese;
+import org.launchcode.models.Category;
 import org.launchcode.models.data.CheeseDao;
 import org.launchcode.models.data.CategoryDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,17 +39,17 @@ public class CheeseController {
     public String displayAddCheeseForm(Model model) {
         model.addAttribute("title", "Add Cheese");
         model.addAttribute(new Cheese());
+        //model.addAttribute("cheeseTypes", CheeseType.values());
         model.addAttribute("categories", categoryDao.findAll());
         return "cheese/add";
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String processAddCheeseForm(@ModelAttribute @Valid Cheese newCheese, Errors errors,
-                                       @RequestParam int categoryId, Model model) {
+    public String processAddCheeseForm(@ModelAttribute  @Valid Cheese newCheese,
+                                       Errors errors, @RequestParam int categoryId, Model model) {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Cheese");
-           // model.addAttribute("categories", categoryDao.findAll());
             return "cheese/add";
         }
 
@@ -76,28 +76,5 @@ public class CheeseController {
         return "redirect:";
     }
 
-    //Bonus Mission Part 2 :
 
-    @RequestMapping(value = "edit/{cheeseId}", method = RequestMethod.GET)
-    public String displayEditForm(Model model, @PathVariable int cheeseId) {
-        model.addAttribute("cheese", cheeseDao.findOne(cheeseId));
-        model.addAttribute("categories", categoryDao.findAll());
-
-        return "cheese/edit";
-    }
-
-    @RequestMapping(value = "edit", method = RequestMethod.POST)
-    public String processEditForm(@RequestParam int cheeseId, @RequestParam String cheeseName,
-                                  @RequestParam String cheeseDescription, @RequestParam int categoryId) {
-        Cheese cheese = cheeseDao.findOne(cheeseId);
-        Category category = categoryDao.findOne(categoryId);
-
-        cheese.setName(cheeseName);
-        cheese.setDescription(cheeseDescription);
-        cheese.setCategory(category);
-
-        cheeseDao.save(cheese);
-
-        return "redirect:";
-    }
 }
