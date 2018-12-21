@@ -25,8 +25,8 @@ public class CheeseController {
     @Autowired
     private CategoryDao categoryDao;
 
-    // Request path: /cheese
-    @RequestMapping(value = "")
+//     Request path: /cheese
+    @RequestMapping(value = "/")
     public String index(Model model) {
 
         model.addAttribute("cheeses", cheeseDao.findAll());
@@ -50,6 +50,7 @@ public class CheeseController {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Cheese");
+            model.addAttribute("categories", categoryDao.findAll());
             return "cheese/add";
         }
 
@@ -75,6 +76,38 @@ public class CheeseController {
 
         return "redirect:";
     }
+    @RequestMapping(value = "edit/{cheeseId}", method = RequestMethod.GET)
+    public String displayEditCheeseForm(Model model, @PathVariable int cheeseId) {
 
+        model.addAttribute("title", "Edit Cheese");
+        model.addAttribute("cheese", cheeseDao.findOne(cheeseId));
+        model.addAttribute("categories", categoryDao.findAll());
+        return "cheese/edit";
+    }
 
+    @RequestMapping(value = "edit/{cheeseId}", method = RequestMethod.POST)
+    public String processEditForm(Model model, @PathVariable int cheeseId,
+                                  @ModelAttribute  @Valid Cheese newCheese,
+                                  @RequestParam int categoryId,
+                                  Errors errors) {
+
+        if (errors.hasErrors()) {
+            model.addAttribute("title", "Add Cheese");
+            return "cheese/edit";
+        }
+
+        Cheese editedCheese = cheeseDao.findOne(cheeseId);
+        editedCheese.setName(newCheese.getName());
+        editedCheese.setDescription(newCheese.getDescription());
+        editedCheese.setCategory(categoryDao.findOne(categoryId));
+        cheeseDao.save(editedCheese);
+
+        return "redirect:/cheese";
+    }
+   // @RequestMapping(value = "category/{categoryId}", method = RequestMethod.GET)
+    //public String category(Model model, @PathVariable int categoryId) {
+      //  model.addAttribute("cheeses", categoryDao.findOne(categoryId).getCheeses());
+        //model.addAttribute("title", "My Cheeses");
+        //return "cheese/index";
+   // }
 }

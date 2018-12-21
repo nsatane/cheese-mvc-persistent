@@ -11,30 +11,34 @@ import java.util.List;
 
 @Entity
 public class Menu {
+
     @Id
     @GeneratedValue
     private int id;
 
     @NotNull
-    @Size(min=3, max=15)
+    @Size(min=3, max=25)
     private String name;
 
     @ManyToMany
-    private List<Cheese> cheeses = new ArrayList<>();
+    private List<Cheese> cheeses;
 
-    public Menu(String name) {
-        this.name = name;
+    // Constructors
+
+    public Menu() {}
+
+    public Menu(String aName) {
+        this.name = aName;
     }
 
-    public Menu() {
+    // Getters and Setters
+
+    public void addItem(Cheese item) {
+        cheeses.add(item);
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -48,14 +52,4 @@ public class Menu {
     public List<Cheese> getCheeses() {
         return cheeses;
     }
-
-    public void addItem(Cheese item) {
-        cheeses.add(item);
-    }
-
-
-    public void setCheeses(List<Cheese> cheeses) {
-        this.cheeses = cheeses;
-    }
-
 }

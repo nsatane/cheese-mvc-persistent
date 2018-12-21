@@ -15,31 +15,34 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("category")
 public class CategoryController {
+
     @Autowired
     private CategoryDao categoryDao;
 
     @RequestMapping(value="")
-    public String index(Model model) {
-        model.addAttribute("title", "My Categories");
+    public String index(Model model){
         model.addAttribute("categories", categoryDao.findAll());
+        model.addAttribute("title", "Categories");
         return "category/index";
     }
 
-    @RequestMapping(value="add", method = RequestMethod.GET)
-    public String add(Model model) {
+    @RequestMapping(value="add" ,method= RequestMethod.GET)
+    public String add(Model model){
         model.addAttribute(new Category());
-        model.addAttribute("title", "Add Category");
+        model.addAttribute("title","Add Category");
         return "category/add";
     }
 
-    @RequestMapping(value="add", method = RequestMethod.POST)
-    public String add(Model model, @ModelAttribute @Valid Category category, Errors errors) {
-        if (errors.hasErrors()) {
+    @RequestMapping(value="add" ,method= RequestMethod.POST)
+    public String add(Model model,
+                      @ModelAttribute @Valid Category category, Errors errors){
+        if (errors.hasErrors()){
+            model.addAttribute("title", "Add Category");
             return "category/add";
         }
-        else {
-            categoryDao.save(category);
-            return "redirect:/category";
-        }
+        categoryDao.save(category);
+        return "redirect: ";
+
     }
+
 }

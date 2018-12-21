@@ -7,11 +7,14 @@
 <h1 th:text="${title}">Default Title</h1>
 
 <nav th:replace="fragments :: navigation"></nav>
-<ul>
-    <li th:each="category: ${categories}" th:text="${category.name}"></li>
-</ul>
+<br/>
+<form>
+    <ul th:each="category: ${categories}">
+        <li  th:text="${category.name}"></li>
+    </ul>
+    <a th:href="@{/category/add/}">Add Category</a>
+</form>
 
-<a th:href="@{'/category/add/'}">Add Category</a>
 
 </body>
 </html>

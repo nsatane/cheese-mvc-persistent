@@ -12,15 +12,15 @@
 
             <form th:object="${menu}" method="post">
 
-                <div class="form-group" th:classappend="${#fields.hasErrors('name') ? 'has-error' : ''}" >
+                <div class="form-group"  >
                     <label th:for="name">Name</label>
-                    <input type="text" class="form-control" th:field="*{name}"/>
-                    <span th:errors="*{name}" class="error"></span>
+                    <input class="form-control" th:field="*{name}"/>
+                    <span th:errors="*{name}" class="error" ></span>
                 </div>
                 <input type="submit" value="Add Menu" />
             </form>
 
-        </div>
+            </div>
 
     </body>
 </html>
